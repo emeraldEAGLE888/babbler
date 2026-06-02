@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <title>Wikipedia Markov Chain Text Generator Bot</title>
+   <style type="text/css">
+       body { font-family: Arial, sans-serif; background-color: #FFFFFF; color: #000000; margin: 20px; font-size: 13px; }
+       h1 { font-family: "Times New Roman", serif; color: #000080; margin-bottom: 5px; font-size: 26px; }
+       .subtitle {
+    color: #020000;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;  /* <-- ADD THIS LINE (Default body is 13px, 16px or 18px will make it pop) */
+}
+       .config-table { background-color: #F0F0F0; border: 1px solid #999999; margin-bottom: 15px; }
+       .config-label { font-weight: bold; text-align: right; padding-right: 10px; }
+       .submit-btn { font-weight: bold; padding: 3px 10px; cursor: pointer; }
+       .output-heading { font-size: 16px; font-weight: bold; color: #000080; margin-top: 20px; margin-bottom: 5px; }
+       .output-box { border: 1px dashed #333333; background-color: #FAFAFA; padding: 12px; min-height: 60px; font-size: 14px; line-height: 1.4; }
+       .status-text { color: #FF0000; font-weight: bold; }
+       .footer { margin-top: 40px; font-size: 11px; color: #777777; border-top: 1px solid #CCCCCC; padding-top: 5px; }
+   </style>
+</head>
+<body>
+
+   <h1>Markov Babbler</h1>
+   <p class="subtitle">Infinite sentence generator!!! How cool. It uses Markov chains to model how words follow one another in a dataset. Uses a transition matrix where each entry represents the probability of moving from one word (or state) to another. It stores the relationships between states/words/tokens and can be used to predict likely next words based on the current one. By iterating upon these probabilities, we generate new sentences that look intelligent at a glance but fail to make any real sense.</p>
+  
+   <hr size="1" noshade>
+
+   <form action="" onsubmit="return false;">
+       <table class="config-table" cellpadding="6" cellspacing="0" border="0">
+           <tr>
+               <td class="config-label">Training Set:</td>
+<td>
+    <select id="modelChoice" style="font-size: 12px;">
+        <option value="general" selected>Top 50 Wikipedia Articles</option>
+        <option value="philosophy">Scholarly Wikipedia</option>
+        <option value="lyrics">My Spotify playlist (85 songs)</option>
+        <option value="kaggle_lyrics">Lyrics 500k Songs Mix</option>
+    <option value="hogwarts">Harry Potter 250k Words</option> </select>
+</td>
+           </tr>
+           <tr>
+               <td class="config-label">Markov Order:</td>
+               <td>
+                   <select id="markovOrder" style="font-size: 12px;">
+                       <option value="1">1</option>
+                       <option value="2" selected>2</option>
+                       <option value="3">3</option>
+                       <option value="4">4</option>
+                   </select>
+               </td>
+           </tr>
+           <tr>
+               <td class="config-label">Output Length:</td>
+               <td>
+                   <input type="text" id="wordCount" value="80" size="5" maxlength="4"> words
+               </td>
+           </tr>
+           <tr>
+               <td class="config-label">Temperature:</td>
+               <td>
+                   <input type="text" id="temperature" value="1.0" size="5" maxlength="4">
+               </td>
+           </tr>
+           <tr>
+               <td>&nbsp;</td>
+               <td>
+                   <input type="submit" class="submit-btn" value="Babble" onclick="generateText();">
+               </td>
+           </tr>
+       </table>
+   </form>
+
+   <div class="output-heading">Output:</div>
+   <div class="output-box" id="output">
+       Text output
+   </div>
+
+   <div class="footer">
+       Page Updated June 2026 | Powered by Python Flask
+   </div>
+
+   <script type="text/javascript">
+       function generateText() {
+           var model = document.getElementById('modelChoice').value;
+           var order = document.getElementById('markovOrder').value;
+           var wordCount = document.getElementById('wordCount').value;
+           var temp = document.getElementById('temperature').value;
+           var outputDiv = document.getElementById('output');
+
+           if (isNaN(wordCount) || wordCount < 1) { alert("Error: Invalid Output Length."); return; }
+           if (isNaN(temp) || temp < 0.01) { alert("Error: Invalid Temperature."); return; }
+
+           outputDiv.innerHTML = '<span class="status-text">generating</span>';
+
+           var xhr = new XMLHttpRequest();
+           var url = "/babble?num_words=" + encodeURIComponent(wordCount) +
+                     "&temperature=" + encodeURIComponent(temp) +
+                     "&order=" + encodeURIComponent(order) +
+                     "&model=" + encodeURIComponent(model); // Added model parameter here
+          
+           xhr.open("GET", url, true);
+           xhr.onreadystatechange = function () {
+               if (xhr.readyState === 4) {
+                   if (xhr.status === 200) {
+                       try {
+                           var data = JSON.parse(xhr.responseText);
+                           outputDiv.innerHTML = data.text;
+                       } catch(e) {
+                           outputDiv.innerHTML = '<span class="status-text">ERROR: Failed to parse data.</span>';
+                       }
+                   } else {
+                       outputDiv.innerHTML = '<span class="status-text">ERROR: Server connection failure.</span>';
+                   }
+               }
+           };
+           xhr.send();
+       }
+   </script>
+</body>
+</html>
