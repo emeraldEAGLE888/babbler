@@ -13,7 +13,7 @@ class SafeMultiWikiBabbler:
         self._setup_database()
 
     def _setup_database(self):
-        """Initializes the SQLite database with multi-order matrix schema tracking."""
+        #Initializes the SQLite database with multi-order matrix schema tracking.
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
             cursor.execute("""
@@ -29,7 +29,7 @@ class SafeMultiWikiBabbler:
             conn.commit()
 
     def train_chunk(self, text_chunk):
-        """Trains the model simultaneously across Orders 1-4 with punctuation attached to words."""
+        #Trains the model simultaneously across Orders 1-4 with punctuation attached to words.
         # Clean formatting while keeping periods, commas, and sentence structure glued to words
         clean_text = text_chunk.replace("\n", " ").replace('"', '').replace("'", "")
         words = clean_text.split()
