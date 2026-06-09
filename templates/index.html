@@ -4,7 +4,7 @@
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
    <title>Wikipedia Markov Chain Text Generator Bot</title>
    <style type="text/css">
-       body { font-family: Arial, sans-serif; background-color: #FFFFFF; color: #000000; margin: 20px; font-size: 13px; }
+       body { font-family: Inter, sans-serif; background-color: #FFFFFF; color: #000000; margin: 20px; font-size: 13px; }
        h1 { font-family: "Times New Roman", serif; color: #000080; margin-bottom: 5px; font-size: 26px; }
        .subtitle {
     color: #020000;
@@ -23,8 +23,8 @@
 </head>
 <body>
 
-   <h1>Markov Babbler</h1>
-   <p class="subtitle">Infinite sentence generator!!! How cool. This babbler uses Markov chains to model how words follow one another in a dataset. Our model uses a transition matrix where each entry represents the probability of moving from one word (or state) to another. It stores the relationships between states/words and can be used to predict likely next words based on the current one. By constantly iterating in this fashion, we generate new sentences that appear coherent but lack any real meaning upon inspection.</p>
+   <h1>Markov Babbler - Linear Algebra Final Project</h1>
+   <p class="subtitle">Infinite sentence generator!!! How cool. This babbler uses Markov chains to model how words follow one another in a dataset. Our model uses a transition matrix where each entry represents the probability of moving from one word (or state) to another. It stores the relationships between states/words and can be used to predict likely next words based on the current one. By constantly iterating in this fashion, we generate new sentences that appear coherent but lack any real meaning upon inspection.<br>Select your desired settings and press "Babble!" when you're ready.</p>
   
    <hr size="1" noshade>
 
@@ -75,11 +75,11 @@
 
    <div class="output-heading">Output:</div>
    <div class="output-box" id="output">
-       Text output
+       Text output will be generated here!
    </div>
 
    <div class="footer">
-       Page Updated June 2026 | Powered by Python Flask
+       Page Updated June 2026 | Powered by Python Flask | Authors: M. Ho, D. Gee
    </div>
 
    <script type="text/javascript">
@@ -93,7 +93,7 @@
            if (isNaN(wordCount) || wordCount < 1) { alert("Error: Invalid Output Length."); return; }
            if (isNaN(temp) || temp < 0.01) { alert("Error: Invalid Temperature."); return; }
 
-           outputDiv.innerHTML = '<span class="status-text">generating</span>';
+           outputDiv.innerHTML = '<span class="status-text">Generating...</span>';
 
            var xhr = new XMLHttpRequest();
            var url = "/babble?num_words=" + encodeURIComponent(wordCount) +
