@@ -24,7 +24,7 @@
 <body>
 
    <h1>Markov Babbler</h1>
-   <p class="subtitle">Infinite sentence generator!!! How cool. It uses Markov chains to model how words follow one another in a dataset. Uses a transition matrix where each entry represents the probability of moving from one word (or state) to another. It stores the relationships between states/words/tokens and can be used to predict likely next words based on the current one. By iterating upon these probabilities, we generate new sentences that look intelligent at a glance but fail to make any real sense.</p>
+   <p class="subtitle">Infinite sentence generator!!! How cool. This babbler uses Markov chains to model how words follow one another in a dataset. Our model uses a transition matrix where each entry represents the probability of moving from one word (or state) to another. It stores the relationships between states/words and can be used to predict likely next words based on the current one. By constantly iterating in this fashion, we generate new sentences that appear coherent but lack any real meaning upon inspection.</p>
   
    <hr size="1" noshade>
 
@@ -67,7 +67,7 @@
            <tr>
                <td>&nbsp;</td>
                <td>
-                   <input type="submit" class="submit-btn" value="Babble" onclick="generateText();">
+                   <input type="submit" class="submit-btn" value="Babble!" onclick="generateText();">
                </td>
            </tr>
        </table>
