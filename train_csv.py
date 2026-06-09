@@ -1,7 +1,7 @@
 import os
 import csv
 import time
-import re  # <-- IMPORTED REGEX ENGINE FOR THE LYRIC FIX
+import re
 import kagglehub
 from babbler import SafeMultiWikiBabbler
 
@@ -22,7 +22,7 @@ if not full_csv_path:
 db_file = "kaggle_lyrics_pool.db"
 bot = SafeMultiWikiBabbler(db_path=db_file)
 
-print("\n--- Commencing Bulk CSV Matrix Training with Linebreak Patch ---")
+print("\nStarting training (Songs)")
 
 with open(full_csv_path, mode='r', encoding='utf-8') as file:
     reader = csv.DictReader(file)
@@ -37,7 +37,7 @@ with open(full_csv_path, mode='r', encoding='utf-8') as file:
                 break
                 
     if not lyrics_key:
-        print(f"❌ Error: Could not find lyrics column.")
+        print(f"Error: Could not find lyrics column.")
         exit()
         
     count = 0
@@ -46,12 +46,11 @@ with open(full_csv_path, mode='r', encoding='utf-8') as file:
     for row in reader:
         raw_lyrics = row.get(lyrics_key) 
         
-        if raw_lyrics:
-            # 🎯 THE DATASET PATCH: 
-            # Find any space followed by a Capital Letter, and prepend our [LINEBREAK] token
+        if raw_lyrics: 
+            # Find any space followed by a Capital Letter, and prepend [LINEBREAK] token
             formatted_lyrics = re.sub(r'\s+([A-Z])', r' [LINEBREAK] \1', raw_lyrics)
             
-            # Feed the newly structured text into your Markov chain
+            # Feed the newly structured text into Markov chain
             bot.train_chunk(formatted_lyrics)
             count += 1
             
@@ -59,8 +58,8 @@ with open(full_csv_path, mode='r', encoding='utf-8') as file:
                 elapsed = time.time() - start_time
                 print(f" Digested {count} songs... (Running for {int(elapsed)} seconds)", flush=True)
                 
-        # Guardrail: Stopping at 3,000 songs keeps the database safe, fast, and under 100MB
+        # Stopping at 3000 songs
         if count >= 3000: 
             break
 
-print(f"\n--- Bulk Import Complete! Successfully injected {count} structured songs. ---")
+print(f"\nSuccessfully mported {count} songs")

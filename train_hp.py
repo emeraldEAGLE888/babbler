@@ -15,13 +15,13 @@ if not os.path.exists(books_folder) or not os.listdir(books_folder):
     exit()
 
 bot = SafeMultiWikiBabbler(db_path=db_file)
-print("\n⚡ --- Commencing Wizarding World Markov Matrix Training --- ⚡")
+print("\nStarting training (Harry Potter)")
 
 # Loop through every text file in your folder
 for filename in os.listdir(books_folder):
     if filename.endswith(".txt"):
         file_path = os.path.join(books_folder, filename)
-        print(f"📖 Actively digesting: {filename}...")
+        print(f"Training on: {filename}...")
         
         # Open the file using errors="ignore" to bypass any smart-quote encoding crashes
         with open(file_path, "r", encoding="utf-8", errors="ignore") as file:
@@ -37,4 +37,4 @@ for filename in os.listdir(books_folder):
             # Feed the perfectly cleaned book text into your Markov engine
             bot.train_chunk(formatted_text)
 
-print("\n✨ --- Spell Complete! Your harry_potter_pool.db is fully charged. --- ✨")
+print("\nTraining complete.")
